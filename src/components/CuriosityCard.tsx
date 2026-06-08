@@ -1,25 +1,37 @@
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { Curiosity } from "../data/curiosities";
 
 interface CuriosityCardProps {
   curiosity: Curiosity;
-  onRead: (id: string) => void;
 }
 
-export function CuriosityCard({ curiosity, onRead }: CuriosityCardProps) {
+export function CuriosityCard({ curiosity }: CuriosityCardProps) {
   return (
     <motion.article className="curiosity-card" whileHover={{ y: -5 }}>
-      <img src={curiosity.image} alt="" loading="lazy" />
-      <div>
-        <span>{curiosity.category}</span>
-        <h3>{curiosity.title}</h3>
-        <p>{curiosity.summary}</p>
-        <button type="button" onClick={() => onRead(curiosity.id)}>
-          <Sparkles size={17} />
-          Descobrir
-        </button>
-      </div>
+      <Link
+        className="curiosity-card__link"
+        to={`/artigos/${curiosity.slug}`}
+        aria-label={`Ler artigo: ${curiosity.title}`}
+      >
+        <div className="curiosity-card__media">
+          <img src={curiosity.image} alt={curiosity.altText} loading="lazy" />
+        </div>
+        <div className="curiosity-card__body">
+          <div className="curiosity-card__meta">
+            <span>{curiosity.category}</span>
+            <span><FileText size={14} /> Artigo</span>
+            <span>{curiosity.readingTime} min</span>
+          </div>
+          <h3>{curiosity.title}</h3>
+          <p>{curiosity.summary}</p>
+          <span className="article-button">
+            Descobrir
+            <ArrowRight size={17} />
+          </span>
+        </div>
+      </Link>
     </motion.article>
   );
 }

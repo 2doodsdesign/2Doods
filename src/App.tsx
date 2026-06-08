@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ExternalLink, Gamepad2, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "./assets/brand/logo-2doods.jpeg";
 import { CuriosityCard } from "./components/CuriosityCard";
 import { DailyMission } from "./components/DailyMission";
@@ -37,6 +38,12 @@ export default function App() {
     achievements.unlock("first-checkpoint");
     return () => window.clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    if (loaded && window.location.hash) {
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [loaded]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -141,12 +148,11 @@ export default function App() {
           </SectionTitle>
           <div className="card-grid">
             {curiosities.map((curiosity) => (
-              <CuriosityCard
-                key={curiosity.id}
-                curiosity={curiosity}
-                onRead={(id) => achievements.readCuriosity(id, siteConfig.points.curiosity)}
-              />
+              <CuriosityCard key={curiosity.id} curiosity={curiosity} />
             ))}
+          </div>
+          <div className="section-link-row">
+            <Link to="/artigos">Ver todos os artigos da Doodex</Link>
           </div>
         </section>
 
@@ -189,8 +195,8 @@ export default function App() {
             <MascotAvatar expression="smiling" size="medium" floating />
             <div>
               <p>
-                Hoje, o projeto entra em uma nova fase conduzida por Reinhold Berner, reunindo conteúdo, UX,
-                frontend, game design e experiências digitais em um pequeno universo gamer.
+                Hoje, o projeto entra em uma nova fase criada e desenvolvida por Reinhold Berner, profissional de
+                produção multimídia, game design, direção de conteúdo, UX e frontend.
               </p>
               <ul>
                 <li><ShieldCheck size={18} /> Criatividade com personalidade</li>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Checkpoint gamer vermelho e azul</title>
+  <desc id="desc">Composição com caminho, bandeira de checkpoint, HUD e luzes vermelha e azul.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#101722"/>
+      <stop offset="0.52" stop-color="#090b10"/>
+      <stop offset="1" stop-color="#15233a"/>
+    </linearGradient>
+    <linearGradient id="track" x1="0" x2="1">
+      <stop offset="0" stop-color="#ef233c"/>
+      <stop offset="1" stop-color="#2979ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <g opacity=".2" stroke="#f7f8fa" stroke-width="2">
+    <path d="M0 120h1200M0 240h1200M0 360h1200M0 480h1200M0 600h1200"/>
+    <path d="M120 0v675M300 0v675M480 0v675M660 0v675M840 0v675M1020 0v675"/>
+  </g>
+  <path d="M170 605c120-140 185-260 275-304 130-64 246 36 364-37 73-45 116-129 207-204" fill="none" stroke="url(#track)" stroke-width="28" stroke-linecap="round"/>
+  <path d="M482 292h168v180H482z" fill="#111722" stroke="#f7f8fa" stroke-opacity=".25" stroke-width="4"/>
+  <path d="M566 292v-140" stroke="#f7f8fa" stroke-width="18" stroke-linecap="round"/>
+  <path d="M574 154h188l-42 58 42 58H574z" fill="#ef233c"/>
+  <path d="M690 154h72l-42 58 42 58h-72z" fill="#2979ff"/>
+  <circle cx="566" cy="382" r="56" fill="#090b10" stroke="#f7f8fa" stroke-opacity=".7" stroke-width="8"/>
+  <path d="M540 382l18 18 38-48" fill="none" stroke="#2979ff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="82" y="80" width="240" height="68" rx="8" fill="#111722" stroke="#f7f8fa" stroke-opacity=".14"/>
+  <text x="112" y="124" fill="#f7f8fa" font-family="Arial, sans-serif" font-size="28" font-weight="700">SAVE POINT</text>
+  <rect x="854" y="528" width="258" height="58" rx="8" fill="#111722" stroke="#2979ff" stroke-opacity=".45"/>
+  <text x="883" y="566" fill="#a7b0be" font-family="Arial, sans-serif" font-size="24">RESPAWN READY</text>
+</svg>

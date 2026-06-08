@@ -64,6 +64,9 @@ As expressões do PNGTuber foram copiadas para `src/assets/mascot/` com nomes se
 - Conquistas: `src/data/achievements.ts`
 - Missão semanal: `src/data/missions.ts`
 - Navegação: `src/data/navigation.ts`
+- Artigos completos: `src/data/articles.ts`
+- Capas dos artigos: `src/assets/articles/`
+- Logo profissional do criador: `src/assets/brand/reinhold-berner-logo.png`
 
 ## MVP incluído
 
@@ -78,6 +81,10 @@ As expressões do PNGTuber foram copiadas para `src/assets/mascot/` com nomes se
 - Sistema básico de Dood Points
 - Quatro conquistas
 - Área Arcade em desenvolvimento
+- Página geral de artigos em `/artigos`
+- Páginas individuais de artigos em `/artigos/:slug`
+- Compartilhamento de artigos
+- Barra de progresso de leitura
 - Seção Sobre
 - Rodapé
 - Página 404 personalizada
@@ -99,3 +106,22 @@ O projeto já inclui `netlify.toml` com:
 - Comando de build: `npm run build`
 - Pasta publicada: `dist`
 - Redirecionamento de SPA para evitar erro 404 em rotas internas
+
+Também existe `public/_redirects`, copiado para `dist/_redirects` durante o build, para garantir que rotas como `/artigos/checkpoints-mudaram-a-forma-de-jogar` funcionem ao recarregar a página.
+
+## Como adicionar artigos
+
+1. Abra `src/data/articles.ts`.
+2. Adicione um novo objeto seguindo a interface `Article`.
+3. Crie um `slug` curto e sem acentos.
+4. Coloque a imagem de capa em `src/assets/articles/`.
+5. Importe essa imagem no topo de `articles.ts`.
+6. Adicione fontes em `sources`.
+
+Os cards da Doodex são gerados automaticamente a partir de `articles.ts`, então não precisa duplicar o conteúdo em outro arquivo.
+
+## Como trocar imagens
+
+- Logo da 2Doods: `src/assets/brand/logo-2doods.jpeg`
+- Logo de Reinhold Berner: `src/assets/brand/reinhold-berner-logo.png`
+- Capas dos artigos: `src/assets/articles/`

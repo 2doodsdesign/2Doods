@@ -8,6 +8,7 @@ export interface ProgressState {
   visitedSections: string[];
   socials: string[];
   curiosities: string[];
+  articles: string[];
 }
 
 const initialProgress: ProgressState = {
@@ -15,12 +16,30 @@ const initialProgress: ProgressState = {
   unlocked: [],
   visitedSections: [],
   socials: [],
-  curiosities: []
+  curiosities: [],
+  articles: []
 };
 
+function normalizeProgress(progress: ProgressState): ProgressState {
+  return {
+    ...initialProgress,
+    ...progress,
+    unlocked: progress.unlocked ?? [],
+    visitedSections: progress.visitedSections ?? [],
+    socials: progress.socials ?? [],
+    curiosities: progress.curiosities ?? [],
+    articles: progress.articles ?? []
+  };
+}
+
+function achievementPoints(id: string) {
+  return achievements.find((item) => item.id === id)?.points ?? 0;
+}
+
 export function useAchievements() {
-  const [progress, setProgress] = useLocalStorage<ProgressState>("2doods-progress", initialProgress);
+  const [storedProgress, setProgress] = useLocalStorage<ProgressState>("2doods-progress", initialProgress);
   const [toastId, setToastId] = useState<string | null>(null);
+  const progress = useMemo(() => normalizeProgress(storedProgress), [storedProgress]);
 
   const level = useMemo(() => {
     const tiers = [
@@ -35,49 +54,98 @@ export function useAchievements() {
   }, [progress.points]);
 
   function addPoints(points: number) {
-    setProgress((current) => ({ ...current, points: current.points + points }));
+    setProgress((current) => ({ ...normalizeProgress(current), points: normalizeProgress(current).points + points }));
   }
 
   function unlock(id: string) {
     const achievement = achievements.find((item) => item.id === id);
     if (!achievement || progress.unlocked.includes(id)) return;
-    setProgress((current) => ({
-      ...current,
-      points: current.points + achievement.points,
-      unlocked: [...current.unlocked, id]
-    }));
+    setProgress((current) => {
+      const normalized = normalizeProgress(current);
+      if (normalized.unlocked.includes(id)) return normalized;
+      return {
+        ...normalized,
+        points: normalized.points + achievement.points,
+        unlocked: [...normalized.unlocked, id]
+      };
+    });
     setToastId(id);
   }
 
   function visitSection(id: string, points: number) {
     if (progress.visitedSections.includes(id)) return;
-    setProgress((current) => ({
-      ...current,
-      points: current.points + points,
-      visitedSections: [...current.visitedSections, id]
-    }));
+    setProgress((current) => {
+      const normalized = normalizeProgress(current);
+      if (normalized.visitedSections.includes(id)) return normalized;
+      return {
+        ...normalized,
+        points: normalized.points + points,
+        visitedSections: [...normalized.visitedSections, id]
+      };
+    });
   }
 
   function openSocial(id: string, points: number) {
     if (progress.socials.includes(id)) return;
-    const nextSocials = [...progress.socials, id];
-    setProgress((current) => ({
-      ...current,
-      points: current.points + points,
-      socials: nextSocials
-    }));
-    if (nextSocials.length >= 3) unlock("multiplatform");
+    setProgress((current) => {
+      const normalized = normalizeProgress(current);
+      if (normalized.socials.includes(id)) return normalized;
+      const nextSocials = [...normalized.socials, id];
+      const shouldUnlock = nextSocials.length >= 3 && !normalized.unlocked.includes("multiplatform");
+      if (shouldUnlock) setToastId("multiplatform");
+      return {
+        ...normalized,
+        points: normalized.points + points + (shouldUnlock ? achievementPoints("multiplatform") : 0),
+        socials: nextSocials,
+        unlocked: shouldUnlock ? [...normalized.unlocked, "multiplatform"] : normalized.unlocked
+      };
+    });
   }
 
   function readCuriosity(id: string, points: number) {
     if (progress.curiosities.includes(id)) return;
-    const nextCuriosities = [...progress.curiosities, id];
-    setProgress((current) => ({
-      ...current,
-      points: current.points + points,
-      curiosities: nextCuriosities
-    }));
-    if (nextCuriosities.length >= 3) unlock("curious-pro");
+    setProgress((current) => {
+      const normalized = normalizeProgress(current);
+      if (normalized.curiosities.includes(id)) return normalized;
+      return {
+        ...normalized,
+        points: normalized.points + points,
+        curiosities: [...normalized.curiosities, id]
+      };
+    });
+  }
+
+  function readArticle(id: string, points: number, totalArticles: number) {
+    setProgress((current) => {
+      const normalized = normalizeProgress(current);
+      if (normalized.articles.includes(id)) return normalized;
+
+      const nextArticles = [...normalized.articles, id];
+      const nextUnlocked = [...normalized.unlocked];
+      let nextPoints = normalized.points + points;
+      let toast: string | null = null;
+
+      if (!nextUnlocked.includes("tutorial-reader")) {
+        nextUnlocked.push("tutorial-reader");
+        nextPoints += achievementPoints("tutorial-reader");
+        toast = "tutorial-reader";
+      }
+
+      if (nextArticles.length >= totalArticles && !nextUnlocked.includes("curious-pro")) {
+        nextUnlocked.push("curious-pro");
+        nextPoints += achievementPoints("curious-pro");
+        toast = "curious-pro";
+      }
+
+      if (toast) setToastId(toast);
+
+      return {
+        ...normalized,
+        points: nextPoints,
+        unlocked: nextUnlocked,
+        articles: nextArticles
+      };
+    });
   }
 
   return {
@@ -89,6 +157,7 @@ export function useAchievements() {
     unlock,
     visitSection,
     openSocial,
-    readCuriosity
+    readCuriosity,
+    readArticle
   };
 }

@@ -19,9 +19,15 @@ export const achievements: Achievement[] = [
     points: 160
   },
   {
+    id: "tutorial-reader",
+    title: "Leitor de Tutoriais",
+    description: "Leia seu primeiro artigo da Doodex.",
+    points: 90
+  },
+  {
     id: "curious-pro",
     title: "Curioso Profissional",
-    description: "Leia três curiosidades da Doodex.",
+    description: "Leia todos os artigos disponíveis da Doodex.",
     points: 150
   },
   {

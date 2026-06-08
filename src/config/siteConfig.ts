@@ -13,7 +13,13 @@ export const siteConfig = {
     openVideo: 80,
     openSocial: 60,
     curiosity: 50,
+    readArticle: 20,
     easterEgg: 120
+  },
+  creator: {
+    name: "Reinhold Berner",
+    role: "Creative Developer, UX, Frontend e Produção Multimídia",
+    portfolioUrl: ""
   },
   social: {
     youtube: "https://www.youtube.com/@TwoDoods2?sub_confirmation=1",

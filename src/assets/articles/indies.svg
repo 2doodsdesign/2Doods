@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Mesa de desenvolvimento indie</title>
+  <desc id="desc">Estação criativa com notebook, caderno, controle e protótipo de jogo independente.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#121722"/>
+      <stop offset=".55" stop-color="#090b10"/>
+      <stop offset="1" stop-color="#1d1724"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" x2="1">
+      <stop offset="0" stop-color="#2979ff"/>
+      <stop offset="1" stop-color="#ef233c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="95" y="495" width="1010" height="80" rx="10" fill="#1a2230"/>
+  <rect x="342" y="132" width="516" height="312" rx="22" fill="#0d1118" stroke="#f7f8fa" stroke-opacity=".16" stroke-width="4"/>
+  <rect x="382" y="172" width="436" height="232" rx="10" fill="#111722"/>
+  <path d="M430 351h340" stroke="#f7f8fa" stroke-opacity=".1" stroke-width="4"/>
+  <path d="M445 332l70-70 58 58 106-122 96 134" fill="none" stroke="url(#screen)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="514" cy="262" r="18" fill="#ef233c"/>
+  <circle cx="679" cy="198" r="18" fill="#2979ff"/>
+  <rect x="254" y="421" width="692" height="42" rx="14" fill="#0d1118"/>
+  <rect x="178" y="370" width="190" height="128" rx="12" fill="#f7f8fa" opacity=".92"/>
+  <path d="M206 405h120M206 437h86M206 469h118" stroke="#111722" stroke-width="8" stroke-linecap="round"/>
+  <rect x="812" y="404" width="204" height="94" rx="44" fill="#111722" stroke="#f7f8fa" stroke-opacity=".16" stroke-width="4"/>
+  <circle cx="870" cy="451" r="15" fill="#ef233c"/>
+  <circle cx="940" cy="451" r="15" fill="#2979ff"/>
+  <path d="M906 430v42M885 451h42" stroke="#a7b0be" stroke-width="10" stroke-linecap="round"/>
+  <text x="414" y="102" fill="#a7b0be" font-family="Arial, sans-serif" font-size="26" letter-spacing="8">SMALL TEAM / BIG IDEA</text>
+</svg>
