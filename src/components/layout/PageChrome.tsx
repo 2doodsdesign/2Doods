@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { siteConfig } from "../../config/siteConfig";
 import { useAchievements } from "../../hooks/useAchievements";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { AchievementToast } from "../gamification/AchievementToast";
@@ -15,7 +14,6 @@ interface PageChromeProps {
 
 export function PageChrome({ children, activeSection = "curiosidades", achievementsOverride }: PageChromeProps) {
   const location = useLocation();
-  const [soundOn, setSoundOn] = useLocalStorage("2doods-sound", siteConfig.soundEnabledByDefault);
   const [theme, setTheme] = useLocalStorage<"default" | "red" | "blue">("2doods-theme", "default");
   const [logoClicks, setLogoClicks] = useState(0);
   const internalAchievements = useAchievements();
@@ -49,8 +47,6 @@ export function PageChrome({ children, activeSection = "curiosidades", achieveme
         activeSection={activeSection}
         points={achievements.progress.points}
         level={achievements.level.name}
-        soundOn={soundOn}
-        onSoundToggle={() => setSoundOn(!soundOn)}
         onNavigate={navigateTo}
         onLogoClick={handleLogoClick}
       />

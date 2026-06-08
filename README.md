@@ -125,3 +125,27 @@ Os cards da Doodex são gerados automaticamente a partir de `articles.ts`, entã
 - Logo da 2Doods: `src/assets/brand/logo-2doods.jpeg`
 - Logo de Reinhold Berner: `src/assets/brand/reinhold-berner-logo.png`
 - Capas dos artigos: `src/assets/articles/`
+
+## Áudio
+
+As músicas ficam em:
+
+```text
+public/audio/music/doodverse-theme.mp3
+public/audio/music/dooddraft-theme.mp3
+```
+
+O sistema global de áudio fica em:
+
+```text
+src/audio/
+```
+
+Preferências salvas no navegador:
+
+- `2doods-music-enabled`
+- `2doods-sfx-enabled`
+- `2doods-music-volume`
+- `2doods-sfx-volume`
+
+O menu possui controles para ligar/desligar música, ligar/desligar efeitos e ajustar os volumes por slider. O volume padrão é 20% para música e 45% para efeitos.

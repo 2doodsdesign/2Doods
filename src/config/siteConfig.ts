@@ -5,7 +5,7 @@ export const siteConfig = {
   description:
     "Curiosidades, histórias, análises e experiências interativas para quem leva videogame a sério sem perder a diversão.",
   featuredVideoId: "channel-trailer",
-  arcadeEnabled: false,
+  arcadeEnabled: true,
   soundEnabledByDefault: false,
   gamificationEnabled: true,
   points: {

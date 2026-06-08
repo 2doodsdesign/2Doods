@@ -1,6 +1,7 @@
-import { Menu, Volume2, VolumeX, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import logo from "../../assets/brand/logo-2doods.jpeg";
+import { AudioControls } from "../../audio/AudioControls";
 import { navigation } from "../../data/navigation";
 import { XPProgress } from "../gamification/XPProgress";
 
@@ -8,13 +9,11 @@ interface NavbarProps {
   activeSection: string;
   points: number;
   level: string;
-  soundOn: boolean;
-  onSoundToggle: () => void;
   onNavigate: (id: string) => void;
   onLogoClick: () => void;
 }
 
-export function Navbar({ activeSection, points, level, soundOn, onSoundToggle, onNavigate, onLogoClick }: NavbarProps) {
+export function Navbar({ activeSection, points, level, onNavigate, onLogoClick }: NavbarProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -50,9 +49,7 @@ export function Navbar({ activeSection, points, level, soundOn, onSoundToggle, o
 
       <div className="navbar__tools">
         <XPProgress points={points} level={level} />
-        <button className="icon-button" type="button" aria-label={soundOn ? "Desativar som" : "Ativar som"} onClick={onSoundToggle}>
-          {soundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
-        </button>
+        <AudioControls />
         <button className="icon-button menu-toggle" type="button" aria-label="Abrir menu" onClick={() => setOpen(!open)}>
           {open ? <X size={21} /> : <Menu size={21} />}
         </button>

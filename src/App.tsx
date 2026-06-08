@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ExternalLink, Gamepad2, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAudio } from "./audio/useAudio";
 import logo from "./assets/brand/logo-2doods.jpeg";
 import { CuriosityCard } from "./components/CuriosityCard";
 import { DailyMission } from "./components/DailyMission";
@@ -27,11 +28,11 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState("inicio");
-  const [soundOn, setSoundOn] = useLocalStorage("2doods-sound", siteConfig.soundEnabledByDefault);
   const [theme, setTheme] = useLocalStorage<"default" | "red" | "blue">("2doods-theme", "default");
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [logoClicks, setLogoClicks] = useState(0);
   const achievements = useAchievements();
+  const audio = useAudio();
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setLoaded(true), 1200);
@@ -70,6 +71,11 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function enterDoodverse() {
+    audio.enableMusic();
+    navigateTo("hub");
+  }
+
   function handleLogoClick() {
     const next = logoClicks + 1;
     setLogoClicks(next);
@@ -82,6 +88,7 @@ export default function App() {
 
   function openSocial(id: string) {
     achievements.openSocial(id, siteConfig.points.openSocial);
+    audio.playSfx("portal");
   }
 
   return (
@@ -91,8 +98,6 @@ export default function App() {
         activeSection={activeSection}
         points={achievements.progress.points}
         level={achievements.level.name}
-        soundOn={soundOn}
-        onSoundToggle={() => setSoundOn(!soundOn)}
         onNavigate={navigateTo}
         onLogoClick={handleLogoClick}
       />
@@ -106,7 +111,7 @@ export default function App() {
             </motion.h1>
             <p>{siteConfig.description}</p>
             <div className="hero__actions">
-              <button type="button" onClick={() => navigateTo("hub")}>
+              <button type="button" onClick={enterDoodverse}>
                 <ArrowDown size={18} />
                 Entrar no Doodverse
               </button>
@@ -157,16 +162,16 @@ export default function App() {
         </section>
 
         <section className="section-band arcade" id="arcade">
-          <SectionTitle eyebrow="2Doods Arcade" title="Monte Seu Time Definitivo">
-            A base do minigame já está preparada para criaturas originais e modos temáticos configuráveis.
+          <SectionTitle eyebrow="2Doods Arcade" title="DoodDraft: Monte Seu Time Definitivo">
+            Escolha seis Pokémon, administre Dood Coins, equilibre tipos e descubra sua classificação no Doodverse.
           </SectionTitle>
           <div className="arcade__panel">
             <MascotAvatar expression="laughing" size="medium" floating />
             <div>
               <Gamepad2 size={32} />
-              <h3>Em desenvolvimento</h3>
-              <p>Escolhas rápidas, sinergia, nota final e card compartilhável entram na próxima fase.</p>
-              <button type="button" onClick={() => achievements.addPoints(30)}>Testar protótipo visual</button>
+              <h3>O primeiro minigame está no ar</h3>
+              <p>Monte seu time em seis rodadas, use dois rerolls e gere um resultado compartilhável.</p>
+              <Link to="/arcade/dooddraft">Começar Draft</Link>
             </div>
           </div>
         </section>

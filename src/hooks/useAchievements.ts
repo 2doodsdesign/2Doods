@@ -9,6 +9,7 @@ export interface ProgressState {
   socials: string[];
   curiosities: string[];
   articles: string[];
+  gameRewards: string[];
 }
 
 const initialProgress: ProgressState = {
@@ -17,7 +18,8 @@ const initialProgress: ProgressState = {
   visitedSections: [],
   socials: [],
   curiosities: [],
-  articles: []
+  articles: [],
+  gameRewards: []
 };
 
 function normalizeProgress(progress: ProgressState): ProgressState {
@@ -28,7 +30,8 @@ function normalizeProgress(progress: ProgressState): ProgressState {
     visitedSections: progress.visitedSections ?? [],
     socials: progress.socials ?? [],
     curiosities: progress.curiosities ?? [],
-    articles: progress.articles ?? []
+    articles: progress.articles ?? [],
+    gameRewards: progress.gameRewards ?? []
   };
 }
 
@@ -148,6 +151,34 @@ export function useAchievements() {
     });
   }
 
+  function rewardGameAction(actionId: string, points: number, achievementIds: string[] = []) {
+    setProgress((current) => {
+      const normalized = normalizeProgress(current);
+      if (normalized.gameRewards.includes(actionId)) return normalized;
+
+      const nextUnlocked = [...normalized.unlocked];
+      let nextPoints = normalized.points + points;
+      let toast: string | null = null;
+
+      achievementIds.forEach((achievementId) => {
+        if (!nextUnlocked.includes(achievementId)) {
+          nextUnlocked.push(achievementId);
+          nextPoints += achievementPoints(achievementId);
+          toast = achievementId;
+        }
+      });
+
+      if (toast) setToastId(toast);
+
+      return {
+        ...normalized,
+        points: nextPoints,
+        unlocked: nextUnlocked,
+        gameRewards: [...normalized.gameRewards, actionId]
+      };
+    });
+  }
+
   return {
     progress,
     level,
@@ -158,6 +189,7 @@ export function useAchievements() {
     visitSection,
     openSocial,
     readCuriosity,
-    readArticle
+    readArticle,
+    rewardGameAction
   };
 }
