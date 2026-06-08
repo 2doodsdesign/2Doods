@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="2Doods">
+  <rect width="64" height="64" rx="14" fill="#090b10"/>
+  <rect x="10" y="13" width="18" height="38" rx="5" fill="#ef233c"/>
+  <rect x="36" y="13" width="18" height="38" rx="5" fill="#2979ff"/>
+  <path d="M19 25v14M12 32h14M45 23v8M41 27h8M42 40h2M48 38h2M47 44h2" stroke="#10141d" stroke-width="4" stroke-linecap="round"/>
+</svg>
