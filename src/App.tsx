@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ExternalLink, Gamepad2, ShieldCheck } from "lucide-react";
+import { ArrowDown, ExternalLink, Gamepad2, Radio, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAudio } from "./audio/useAudio";
@@ -145,6 +145,22 @@ export default function App() {
               setSelectedVideo(video);
             }}
           />
+        </section>
+
+        <section className="section-band plantao-home" id="plantao-preview">
+          <SectionTitle eyebrow="Plantão Doodverse" title="Notícias gamer com contexto antes do hype">
+            Um hub editorial para resumir manchetes, separar fato de opinião, creditar fontes e transformar assunto bom
+            em pauta de Short.
+          </SectionTitle>
+          <div className="plantao-home__panel">
+            <MascotAvatar expression="talking" size="medium" floating />
+            <div>
+              <Radio size={32} />
+              <h3>O radar de notícias entrou em modo MVP</h3>
+              <p>Primeiro rascunha, revisa e só depois publica. Rascunhos sem aprovação ficam fora do site público.</p>
+              <Link to="/plantao">Abrir Plantão</Link>
+            </div>
+          </div>
         </section>
 
         <section className="section-band" id="curiosidades">

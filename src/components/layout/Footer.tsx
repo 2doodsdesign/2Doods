@@ -30,7 +30,7 @@ export function Footer() {
 
       <nav className="footer__nav" aria-label="Navegação do rodapé">
         {navigation.map((item) => (
-          <a key={item.id} href={item.id === "inicio" ? "/#inicio" : `/#${item.id}`}>
+          <a key={item.id} href={"href" in item && item.href ? item.href : item.id === "inicio" ? "/#inicio" : `/#${item.id}`}>
             {item.label}
           </a>
         ))}

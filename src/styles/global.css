@@ -138,6 +138,7 @@ img {
 }
 
 .nav-links button,
+.nav-links a,
 .hero__actions button,
 .hero__actions a,
 .video-card button,
@@ -159,7 +160,8 @@ img {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
 }
 
-.nav-links button {
+.nav-links button,
+.nav-links a {
   min-height: 38px;
   padding: 0.55rem 0.7rem;
   background: transparent;
@@ -167,7 +169,9 @@ img {
 }
 
 .nav-links button.is-active,
-.nav-links button:hover {
+.nav-links a.is-active,
+.nav-links button:hover,
+.nav-links a:hover {
   border-color: rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.08);
 }
@@ -764,7 +768,8 @@ img {
     display: flex;
   }
 
-  .nav-links button {
+  .nav-links button,
+  .nav-links a {
     justify-content: flex-start;
   }
 

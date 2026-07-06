@@ -30,6 +30,20 @@ export function Navbar({ activeSection, points, level, onNavigate, onLogoClick }
       <nav className={open ? "nav-links is-open" : "nav-links"} aria-label="Navegação principal">
         {navigation.map((item) => {
           const Icon = item.icon;
+          if ("href" in item && item.href) {
+            return (
+              <a
+                key={item.id}
+                className={activeSection === item.id ? "is-active" : ""}
+                href={item.href}
+                onClick={() => setOpen(false)}
+              >
+                <Icon size={17} />
+                <span>{item.label}</span>
+              </a>
+            );
+          }
+
           return (
             <button
               key={item.id}

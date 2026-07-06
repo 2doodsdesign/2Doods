@@ -1,8 +1,9 @@
-import { Gamepad2, Home, Info, PlaySquare, Share2, Sparkles } from "lucide-react";
+import { Gamepad2, Home, Info, PlaySquare, Radio, Share2, Sparkles } from "lucide-react";
 
 export const navigation = [
   { id: "inicio", label: "Início", icon: Home },
   { id: "videos", label: "Vídeos", icon: PlaySquare },
+  { id: "plantao", label: "Plantão", icon: Radio, href: "/plantao" },
   { id: "curiosidades", label: "Curiosidades", icon: Sparkles },
   { id: "arcade", label: "Arcade", icon: Gamepad2 },
   { id: "sobre", label: "Sobre", icon: Info },
