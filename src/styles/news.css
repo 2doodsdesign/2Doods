@@ -6,7 +6,11 @@
 .plantao-empty,
 .plantao-transparency > div,
 .news-draft-card,
-.news-short-panel {
+.news-short-panel,
+.news-prompt-panel,
+.news-ai-response-panel,
+.news-export-panel,
+.news-manual-entry > div {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   background:
@@ -43,7 +47,11 @@
 .plantao-card__actions button,
 .news-admin-toolbar button,
 .news-draft-actions button,
-.news-draft-links a {
+.news-draft-links a,
+.news-primary-action,
+.news-link-import button,
+.news-ai-response-panel button,
+.news-export-panel button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +66,8 @@
 
 .plantao-home__panel a,
 .plantao-card__actions a,
-.news-draft-actions button:first-child {
+.news-draft-actions button:first-child,
+.news-primary-action {
   background: linear-gradient(135deg, rgba(239, 35, 60, 0.86), rgba(41, 121, 255, 0.86));
 }
 
@@ -309,9 +318,114 @@
   line-height: 1.65;
 }
 
+.plantao-mode-note {
+  padding-block: clamp(1rem, 2vw, 1.6rem);
+}
+
+.plantao-mode-note > div {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-gray);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.plantao-mode-note p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.plantao-mode-note code,
+.news-admin-hero code,
+.news-export-panel code {
+  color: var(--color-white);
+}
+
 .news-admin-hero > div {
   display: grid;
   gap: 0.8rem;
+}
+
+.news-manual-entry {
+  padding-block: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.news-manual-entry > div {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1rem, 3vw, 1.35rem);
+}
+
+.news-link-import {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.news-link-import label,
+.news-manual-grid label,
+.news-ai-response-panel label,
+.news-prompt-panel,
+.news-export-panel {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.news-manual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.news-manual-grid__wide {
+  grid-column: 1 / -1;
+}
+
+.news-link-import input,
+.news-manual-grid input,
+.news-manual-grid select,
+.news-manual-grid textarea,
+.news-ai-response-panel textarea,
+.news-prompt-panel textarea,
+.news-export-panel textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.055);
+  font: inherit;
+}
+
+.news-link-import input,
+.news-manual-grid input,
+.news-manual-grid select {
+  min-height: 42px;
+  padding: 0.65rem 0.75rem;
+}
+
+.news-manual-grid textarea,
+.news-ai-response-panel textarea,
+.news-prompt-panel textarea,
+.news-export-panel textarea {
+  min-height: 130px;
+  padding: 0.75rem;
+  resize: vertical;
+}
+
+.news-prompt-panel textarea,
+.news-export-panel textarea {
+  min-height: 220px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.news-manual-grid select option {
+  color: #111722;
 }
 
 .news-admin-toolbar,
@@ -404,6 +518,19 @@
   padding: 0.9rem;
 }
 
+.news-prompt-panel,
+.news-ai-response-panel,
+.news-export-panel {
+  gap: 0.85rem;
+  padding: 0.9rem;
+}
+
+.news-prompt-panel p,
+.news-export-panel p {
+  margin: 0;
+  color: var(--color-gray);
+}
+
 .news-short-panel div {
   display: grid;
   gap: 0.25rem;
@@ -425,6 +552,12 @@
   font-weight: 800;
 }
 
+.news-error {
+  margin: 0;
+  color: #ff8fa0;
+  font-weight: 800;
+}
+
 @media (max-width: 1040px) {
   .plantao-hero > div {
     grid-template-columns: 1fr;
@@ -433,11 +566,17 @@
   .plantao-alert-list {
     grid-template-columns: 1fr;
   }
+
+  .news-manual-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
   .plantao-home__panel,
-  .news-draft-card__header {
+  .news-draft-card__header,
+  .news-link-import,
+  .news-manual-grid {
     grid-template-columns: 1fr;
   }
 
@@ -460,7 +599,11 @@
   .plantao-home__panel a,
   .news-admin-toolbar button,
   .news-draft-actions button,
-  .news-draft-links a {
+  .news-draft-links a,
+  .news-link-import button,
+  .news-primary-action,
+  .news-ai-response-panel button,
+  .news-export-panel button {
     width: 100%;
   }
 

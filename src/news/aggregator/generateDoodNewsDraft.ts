@@ -96,6 +96,12 @@ export function generateDoodNewsDraft(group: NewsGroup): DoodNewsDraft {
     shortHook: generated.shortHook,
     shortPotential: generated.shortPotential,
     shortPackage: shortPackage(generated.title, generated.tags, generated.shortHook),
+    youtubeShortTitle: generated.title.length > 58 ? `${generated.title.slice(0, 55)}...` : generated.title,
+    tiktokCaption: "",
+    instagramCaption: "",
+    pinnedComment: "Voce acha que isso muda alguma coisa para quem joga agora ou e barulho de calendario?",
+    communityQuestion: "Isso entra no seu radar ou voce esperaria mais informacao antes do hype?",
+    reviewedByHuman: false,
     priorityScore,
     relatedLinks
   };

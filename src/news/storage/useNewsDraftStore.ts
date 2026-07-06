@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { mockDoodNewsDrafts } from "../data/mockDoodNews";
+import { demoDoodNewsDrafts } from "../data/demoDoodNews";
 import type { DoodNewsDraft, NewsDraftStatus } from "../types";
 
 const storageKey = "2doods-news-drafts";
@@ -10,7 +10,7 @@ function sortDrafts(drafts: DoodNewsDraft[]) {
 }
 
 export function useNewsDraftStore() {
-  const [drafts, setDrafts] = useLocalStorage<DoodNewsDraft[]>(storageKey, mockDoodNewsDrafts);
+  const [drafts, setDrafts] = useLocalStorage<DoodNewsDraft[]>(storageKey, demoDoodNewsDrafts);
 
   const approvedDrafts = useMemo(() => sortDrafts(drafts.filter((draft) => draft.status === "approved")), [drafts]);
 
@@ -20,20 +20,26 @@ export function useNewsDraftStore() {
     );
   }
 
+  function addDraft(draft: DoodNewsDraft) {
+    setDrafts((current) => sortDrafts([draft, ...current]));
+  }
+
   function setStatus(id: string, status: NewsDraftStatus) {
     updateDraft(id, {
       status,
-      approvedAt: status === "approved" ? new Date().toISOString() : undefined
+      approvedAt: status === "approved" ? new Date().toISOString() : undefined,
+      reviewedByHuman: status === "approved" ? true : undefined
     });
   }
 
   function resetMockData() {
-    setDrafts(mockDoodNewsDrafts);
+    setDrafts(demoDoodNewsDrafts);
   }
 
   return {
     drafts: sortDrafts(drafts),
     approvedDrafts,
+    addDraft,
     updateDraft,
     approveDraft: (id: string) => setStatus(id, "approved"),
     rejectDraft: (id: string) => setStatus(id, "rejected"),

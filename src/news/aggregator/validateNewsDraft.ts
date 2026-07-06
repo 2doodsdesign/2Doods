@@ -10,6 +10,7 @@ export function validateNewsDraft(draft: DoodNewsDraft) {
   if (!draft.whyItMatters.trim()) errors.push("Contexto ausente.");
   if (!draft.doodOpinion.trim()) errors.push("Opiniao editorial ausente.");
   if (!draft.relatedLinks.length) errors.push("Pelo menos uma fonte relacionada e obrigatoria.");
+  if (draft.status === "approved" && !draft.reviewedByHuman) errors.push("Noticia aprovada precisa de revisao humana.");
   if (draft.status === "approved" && errors.length) errors.push("Rascunho aprovado nao pode ter campos obrigatorios vazios.");
 
   return {

@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import { PageChrome } from "../components/layout/PageChrome";
 import { MascotAvatar } from "../components/mascot/MascotAvatar";
 import { Seo } from "../components/Seo";
+import { approvedDoodNews } from "../news/data/approvedDoodNews";
+import { demoDoodNewsDrafts } from "../news/data/demoDoodNews";
 import { useNewsDraftStore } from "../news/storage/useNewsDraftStore";
 import type { DoodNewsDraft, NewsReliability } from "../news/types";
 
@@ -10,22 +12,22 @@ const reliabilityLabels: Record<NewsReliability, string> = {
   confirmed: "Confirmado",
   rumor: "Rumor",
   leak: "Vazamento",
-  analysis: "Analise"
+  analysis: "Análise"
 };
 
 const shortPotentialLabels = {
   low: "baixo",
-  medium: "medio",
+  medium: "médio",
   high: "alto"
 };
 
 function relativeTime(date: string) {
   const diffMs = Date.now() - new Date(date).getTime();
   const minutes = Math.max(1, Math.round(diffMs / 1000 / 60));
-  if (minutes < 60) return `${minutes} min atras`;
+  if (minutes < 60) return `${minutes} min atrás`;
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours} h atras`;
-  return `${Math.round(hours / 24)} d atras`;
+  if (hours < 24) return `${hours} h atrás`;
+  return `${Math.round(hours / 24)} d atrás`;
 }
 
 function hostFromUrl(url: string) {
@@ -36,12 +38,19 @@ function hostFromUrl(url: string) {
   }
 }
 
-function NewsCard({ draft }: { draft: DoodNewsDraft }) {
+function approvedOnly(drafts: DoodNewsDraft[]) {
+  return drafts
+    .filter((draft) => draft.status === "approved")
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+}
+
+function NewsCard({ draft, demoMode }: { draft: DoodNewsDraft; demoMode: boolean }) {
   const [showOpinion, setShowOpinion] = useState(false);
 
   return (
     <article className="plantao-card">
       <div className="plantao-card__meta">
+        {demoMode || draft.isDemo ? <span className="reliability-pill reliability-pill--demo">Demo</span> : null}
         <span className={`reliability-pill reliability-pill--${draft.reliability}`}>{reliabilityLabels[draft.reliability]}</span>
         <span>{draft.category}</span>
         <span>{relativeTime(draft.publishedAt)}</span>
@@ -100,19 +109,29 @@ function NewsCard({ draft }: { draft: DoodNewsDraft }) {
 }
 
 export function PlantaoPage() {
-  const { approvedDrafts } = useNewsDraftStore();
+  const { approvedDrafts: localApprovedDrafts } = useNewsDraftStore();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("Todos");
   const [reliability, setReliability] = useState<"Todos" | NewsReliability>("Todos");
 
+  const staticApproved = useMemo(() => approvedOnly(approvedDoodNews), []);
+  const localApproved = useMemo(
+    () => approvedOnly(localApprovedDrafts.filter((draft) => !draft.isDemo && !draft.isMock)),
+    [localApprovedDrafts]
+  );
+  const demoApproved = useMemo(() => approvedOnly(demoDoodNewsDrafts), []);
+  const feedMode = staticApproved.length ? "static" : localApproved.length ? "local" : "demo";
+  const visibleDrafts = feedMode === "static" ? staticApproved : feedMode === "local" ? localApproved : demoApproved;
+  const demoMode = feedMode === "demo";
+
   const categories = useMemo(
-    () => ["Todos", ...Array.from(new Set(approvedDrafts.map((draft) => draft.category)))],
-    [approvedDrafts]
+    () => ["Todos", ...Array.from(new Set(visibleDrafts.map((draft) => draft.category)))],
+    [visibleDrafts]
   );
   const filteredDrafts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    return approvedDrafts.filter((draft) => {
+    return visibleDrafts.filter((draft) => {
       const matchesQuery =
         !normalizedQuery ||
         [draft.title, draft.summary, draft.category, draft.sourceName, ...draft.tags]
@@ -124,9 +143,9 @@ export function PlantaoPage() {
 
       return matchesQuery && matchesCategory && matchesReliability;
     });
-  }, [approvedDrafts, category, query, reliability]);
+  }, [category, query, reliability, visibleDrafts]);
 
-  const latestAlerts = approvedDrafts.slice(0, 3);
+  const latestAlerts = visibleDrafts.slice(0, 3);
 
   return (
     <PageChrome activeSection="plantao">
@@ -163,11 +182,33 @@ export function PlantaoPage() {
               <div>
                 <ShieldCheck size={20} />
                 <strong>Resumo editorial, fonte na mesa.</strong>
-                <span>Conteúdo produzido a partir de fontes públicas, com resumo editorial da 2Doods.</span>
+                <span>Conteúdo produzido a partir de fontes públicas, com revisão antes de aparecer no site.</span>
               </div>
             </div>
           </div>
         </section>
+
+        {demoMode ? (
+          <section className="plantao-mode-note section-band">
+            <div>
+              <ShieldCheck size={20} />
+              <p>
+                Modo demonstração: estes cards servem só para validar o visual. Publique notícias reais adicionando itens
+                revisados em <code>src/news/data/approvedDoodNews.ts</code>.
+              </p>
+            </div>
+          </section>
+        ) : feedMode === "local" ? (
+          <section className="plantao-mode-note section-band">
+            <div>
+              <ShieldCheck size={20} />
+              <p>
+                Prévia local: estas notícias foram aprovadas neste navegador. Para publicar no site estático, exporte o
+                código no painel admin e adicione em <code>approvedDoodNews.ts</code>.
+              </p>
+            </div>
+          </section>
+        ) : null}
 
         <section className="plantao-alerts section-band" aria-labelledby="ultimos-alertas">
           <div>
@@ -178,7 +219,7 @@ export function PlantaoPage() {
             <div className="plantao-alert-list">
               {latestAlerts.map((draft) => (
                 <a key={draft.id} href={draft.sourceUrl} target="_blank" rel="noreferrer">
-                  <span>{reliabilityLabels[draft.reliability]}</span>
+                  <span>{demoMode || draft.isDemo ? "Demo" : reliabilityLabels[draft.reliability]}</span>
                   <strong>{draft.title}</strong>
                   <small>
                     <Clock3 size={14} />
@@ -225,7 +266,7 @@ export function PlantaoPage() {
                   <option value="confirmed">Confirmado</option>
                   <option value="rumor">Rumor</option>
                   <option value="leak">Vazamento</option>
-                  <option value="analysis">Analise</option>
+                  <option value="analysis">Análise</option>
                 </select>
               </label>
             </div>
@@ -233,7 +274,7 @@ export function PlantaoPage() {
             {filteredDrafts.length ? (
               <div className="plantao-grid">
                 {filteredDrafts.map((draft) => (
-                  <NewsCard key={draft.id} draft={draft} />
+                  <NewsCard key={draft.id} draft={draft} demoMode={demoMode} />
                 ))}
               </div>
             ) : (
@@ -250,8 +291,8 @@ export function PlantaoPage() {
           <div>
             <ShieldCheck size={22} />
             <p>
-              O Plantão Doodverse reúne notícias de fontes públicas e adiciona contexto editorial da 2Doods. Links
-              originais são sempre creditados. Rascunhos podem ser auxiliados por IA e revisados antes da publicação.
+              O Plantão Doodverse reúne notícias de fontes públicas e adiciona contexto editorial da 2Doods. As
+              publicações são revisadas antes de aparecerem no site.
             </p>
           </div>
         </section>

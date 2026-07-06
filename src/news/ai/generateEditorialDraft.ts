@@ -34,6 +34,8 @@ function introForType(topicType: NewsTopicType) {
 }
 
 export function generateEditorialDraft(input: EditorialDraftInput) {
+  // MVP sem custo de IA: esta função cria um rascunho mecânico/local.
+  // Uma IA real deve entrar futuramente apenas no backend/Function, nunca no frontend público.
   const sourceLabel = `${input.sourceName} publicou a informacao original`;
   const excerpt = input.excerpt ? ` O recorte mais util: ${input.excerpt}` : "";
   const shortPotential = detectPotential(input.priorityScore);

@@ -37,6 +37,9 @@ export interface RawNewsItem {
   excerpt?: string;
   image?: string;
   language?: string;
+  category?: string;
+  reliability?: NewsReliability;
+  tags?: string[];
 }
 
 export interface RelatedNewsLink {
@@ -78,6 +81,16 @@ export interface DoodNewsDraft {
   relatedLinks: RelatedNewsLink[];
   reviewNotes?: string;
   isMock?: boolean;
+  isDemo?: boolean;
+  manualPrompt?: string;
+  aiResponseRaw?: string;
+  youtubeShortTitle?: string;
+  tiktokCaption?: string;
+  instagramCaption?: string;
+  pinnedComment?: string;
+  communityQuestion?: string;
+  createdManually?: boolean;
+  reviewedByHuman?: boolean;
 }
 
 export interface NewsGroup {
